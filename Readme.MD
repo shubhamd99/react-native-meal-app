@@ -9,3 +9,5 @@
 6. npm install --save @react-navigation/core react-navigation-tabs // ios
 7. npm install --save @react-navigation/core react-navigation-material-bottom-tabs react-native-paper // android
 8. npm install --save react-navigation-drawer
+
+![alt_img](https://i.imgur.com/GWcsexQ.png)
