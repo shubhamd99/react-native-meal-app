@@ -77,7 +77,7 @@ const MealsFavTabNavigator = Platform.OS === 'android'
 ? createMaterialBottomTabNavigator(tabScreenConfig, { activeTintColor: 'white', shifting: true,
     // barStyle: { backgroundColor: Colors.primaryColor } // if shifting (ripple effect) is false 
 }) 
-: createBottomTabNavigator({ tabScreenConfig }, { tabBarOptions: { activeTintColor: Colors.accentColor, labelStyle: { fontFamily: 'open-sans' } } })
+: createBottomTabNavigator( tabScreenConfig , { tabBarOptions: { activeTintColor: Colors.accentColor, labelStyle: { fontFamily: 'open-sans' } } })
 
 
 const FiltersNavigator = createStackNavigator({

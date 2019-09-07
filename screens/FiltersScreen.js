@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch } from 'react-redux';
 
 import CustomHeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
+import { setFilters } from '../store/actions/meals';
 
 const FiltersSwitch = props => {
     return (
@@ -16,10 +18,30 @@ const FiltersSwitch = props => {
 }
 
 const FiltersScreen = props => {
+    const { navigation } = props;
+
     const [isGlutenFree, setisGlutenFree] = useState(false);
     const [isLactosFree, setisLactosFree] = useState(false);
     const [isVegan, setisVegan] = useState(false);
     const [isVegetarian, setisVegetarian] = useState(false);
+
+    const dispatch = useDispatch();
+
+    // only recreated when its dependency change, it is cached by react (useCallback hook)
+    const saveFilters = useCallback(() => {
+        const appliedFilters = {
+            gluetenFree: isGlutenFree,
+            lactosFree: isLactosFree,
+            vegan: isVegan,
+            vegetarian: isVegetarian
+        }
+
+        dispatch(setFilters(appliedFilters));
+    }, [isVegetarian, isVegan, isGlutenFree, isLactosFree, dispatch])
+
+    useEffect(() => {
+        navigation.setParams({save: saveFilters});
+    }, [saveFilters]);
 
     return (
         <View style={styles.screen}>
@@ -37,7 +59,10 @@ FiltersScreen.navigationOptions = (navData) => {
         headerTitle: 'Filter Meals',
         headerLeft: (<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                     <Item title="Menu" iconName="ios-menu" onPress={() => { navData.navigation.toggleDrawer() }} />
-                    </HeaderButtons>)
+                    </HeaderButtons>),
+        headerRight: (<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+            <Item title="Save" iconName="ios-save" onPress={navData.navigation.getParam('save')} />
+            </HeaderButtons>)
     }
 };
 
